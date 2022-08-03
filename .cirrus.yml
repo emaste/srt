@@ -1,0 +1,15 @@
+freebsd_task:
+    matrix:
+        - name: freebsd14-amd64-Debug
+          freebsd_instance:
+            image_family: freebsd-14-0-snap
+          env:
+            BUILD_TYPE: Debug
+    install_script:
+        - ASSUME_ALWAYS_YES=yes pkg bootstrap -f
+        - pkg install -y cmake mbedtls
+    script:
+    - mkdir -p build
+    - cd build
+    - cmake ..
+    - make -j$(sysctl -n hw.ncpu)
